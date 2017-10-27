@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<settings>
+  <category label="General Settings">
+    <setting label="www.digi-online login" type="lsep"/>
+    <setting label="Login User"        id="login_User"     type="text" default="testUser@rdslink.ro" />
+    <setting label="Login Password"    id="login_Password" type="text" default="testPassword"  option="hidden" />
+    <setting label="Enable User Login" id="login_Enabled"  type="bool" default="false" />
+    <setting type="sep"/>
+    <setting label="Playback" type="lsep"/>
+    <setting label="Preferred Quality" type="labelenum" id="stream_Quality" lvalues="hq|mq|lq"/>
+    <setting label="OSD Info Popup" id="popup_Enabled" type="bool" default="true" />
+    <setting label="OSD EPG Info" id="popup_EPGinfo" type="bool" default="true" />
+    <setting type="sep"/>
+  </category>
+  <category label="Advanced">
+    <setting label="Debug Options(plugin_video_digi-online.log)" type="lsep"/>
+    <setting label="Enable log" id="debug_Enabled" type="bool" default="false" />
+    <setting label="Log HTTP source" id="http_log_Enable" type="bool" default="false" />
+    <setting type="sep"/>
+  </category>
+</settings>
