@@ -15,7 +15,7 @@
   <category label="Advanced">
     <setting label="Debug Options(plugin_video_digi-online.log)" type="lsep"/>
     <setting label="Enable log" id="debug_Enabled" type="bool" default="false" />
-    <setting label="Log HTTP source" id="http_log_Enable" type="bool" default="false" />
+    <setting label=“Log HTTP source" id="http_log_Enable" type="bool" default="false" />
     <setting type="sep"/>
   </category>
 </settings>
