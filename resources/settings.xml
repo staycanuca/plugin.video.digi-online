@@ -12,10 +12,22 @@
     <setting label="OSD EPG Info" id="popup_EPGinfo" type="bool" default="true" />
     <setting type="sep"/>
   </category>
-  <category label="Advanced">
-    <setting label="Debug Options(plugin_video_digi-online.log)" type="lsep"/>
-    <setting label="Enable log" id="debug_Enabled" type="bool" default="false" />
-    <setting label="Log HTTP source" id="http_log_Enable" type="bool" default="false" />
+
+  <category label="Hidden Programmes">
+    <setting label="Streaming Server for Hidden Programmes" type="labelenum" id="extra_streamSRV" lvalues="s2.220.t1.ro|edge24.rdsnet.ro|edge84.rdsnet.ro|cdn02-edge30.rdsnet.ro|cdn01-edge30.rdsnet.ro"/>
+    <setting label="Hidden Programmes List" type="lsep"/>
+    <setting label="Discovery Channel"	id="71"	type="bool" default="true" />
+    <setting label="TV5Monde" 		id="75" type="bool" default="true" />
+    <setting label="TLC" 		id="72" type="bool" default="true" />
+    <setting label="Travel Mix Channel" id="74" type="bool" default="false" />
+    <setting label="Epop Entertainment" id="73" type="bool" default="false" />
+    <setting type="sep"/>
+  </category>
+
+  <category label="Debug Options">
+    <setting label="Log File: plugin_video_digi-online.log" type="lsep"/>
+    <setting label="Enable debug" id="debug_Enabled" type="bool" default="false" />
+    <setting label="Save HTTP source code" id="http_log_Enable" type="bool" default="false" />
     <setting type="sep"/>
   </category>
 </settings>
