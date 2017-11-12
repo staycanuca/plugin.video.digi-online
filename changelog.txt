@@ -1,14 +1,14 @@
 v 0.2.5
 
 
-v 0.2.4.b
+v 0.2.4
 - added hidden Digi-Online programmes:
   Discovery Channel
   TV5Monde
   TLC
   Travel Mix Channel
   Epop Entertainment
- These programmes are not accessible when visiting 'http://www.digi-online.ro/tv/' from a PC/MAC
+ (These programmes are not accessible when visiting 'http://www.digi-online.ro/tv/' from a PC/MAC)
 
 v 0.2.3
 - bugfix: fixed playing www.digi24.ro programmes
