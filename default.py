@@ -418,7 +418,7 @@ def parseInput(url):
 	httpGet = httpURLopener.open(link, formdata)
 	response = httpGet.read()
 	if debug_Enabled == 'true':
-	  LF.write("parseInput HTTP POST: '" + link + '\'\n')
+	  LF.write("parseInput HTTP POST: '" + link + ' ' + formdata + '\'\n')
 	  LF.write("parseInput HTTP/1.1 200 OK: '" + response + '\'\n')
 
 	httpURLopener.addheaders = [
@@ -452,7 +452,7 @@ def parseInput(url):
 	  LF.write("----------------------------"+'\n')
 
     elif result is None and match is not None:
-      httpURLopener = urllib2.build_opener()
+      httpURLopener = urllib2.build_opener(urllib2.HTTPCookieProcessor(myCookieJar))
       httpURLopener.addheaders = [
 	  ('Host', digiMaster),
 	  ('Accept', '*/*'),
@@ -470,19 +470,24 @@ def parseInput(url):
       link = 'http://balancer.digi24.ro/streamer.php?&scope=' + match[0] + '&key=' + myKey + '&outputFormat=json&type=hls&quality=' + str(stream_Quality)
 
       if debug_Enabled == 'true':
-	LF.write("parseInput match: '" + str(match) + '\'\n')
+	LF.write("parseInput scope: '" + str(match) + '\'\n')
 	LF.write("parseInput HTTP GET: '" + keyMaster + '\'\n')
 	LF.write("parseInput HTTP/1.1 200 OK (key): '" + myKey + '\'\n')
+	for cookie in (myCookieJar):
+	  LF.write("processLink cookie: " + str(cookie) + '\n')
 
-      ### TODO
-      ### ADD COOKIES to header
-      #slink = 'http://www.digi-online.ro/xhr-gen-stream.php'
-      #formdata = urllib.urlencode({'scope': match[0]})
-      #httpGet = httpURLopener.open(slink, formdata)
-      #response = httpGet.read()
-      #if debug_Enabled == 'true':
-	#LF.write("parseInput HTTP POST: '" + slink + '\'\n')
-	#LF.write("parseInput HTTP/1.1 200 OK: '" + response + '\'\n')
+      if login_Enabled == 'true':
+	slink = 'http://www.digi-online.ro/xhr-gen-stream.php'
+	formdata = urllib.urlencode({'scope': match[0]})
+	httpURLopener.addheaders = [
+	    ('X-Requested-With', 'XMLHttpRequest')
+	  ]
+	httpGet = httpURLopener.open(slink, formdata)
+	response = httpGet.read()
+
+	if debug_Enabled == 'true':
+	  LF.write("parseInput HTTP POST: '" + slink + ' ' + formdata +'\'\n')
+	  LF.write("parseInput HTTP/1.1 200 OK: '" + response + '\'\n')
 
       try:
 	file = httpURLopener.open(link).read()
