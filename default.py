@@ -26,8 +26,9 @@ http_log_Enable = settings.getSetting('http_log_Enable')
 osdInfo_Enabled = settings.getSetting('popup_Enabled')
 epgInfo_Enabled = settings.getSetting('popup_EPGinfo')
 
-#digiMaster = 's2.220.t1.ro'
-#digiMaster =  'edge24.rdsnet.ro'
+extra_streamSRV = settings.getSetting('extra_streamSRV')
+hiddenProgrammes = ['discoverye', 'tv5mondee', 'tlce', 'travelmixchannele', 'eentertainmente']
+
 digiMaster = 'balancer.digi24.ro'
 keyMaster = 'http://balancer.digi24.ro/streamer/make_key.php'
 digiwebSite = 'www.digi-online.ro'
@@ -102,12 +103,20 @@ def ROOT():
   addDir('Realitatea TV', 'http://www.digi-online.ro/tv/realitatea+tv/', setIcon('RealitateaTV.png'))
   addDir('Romania TV', 'http://www.digi-online.ro/tv/romania+tv/', setIcon('RomaniaTV.png'))
   addDir('France 24 [EN]', 'http://www.digi-online.ro/tv/france+24/', setIcon('France24.png'))
-
+  if settings.getSetting('75') == 'true':
+    addDir('TV5 Monde', 'http://' + str(extra_streamSRV) +'/digiedge2/tv5mondee' + str(stream_Quality) +'/index.m3u8?is=75&src=app&t=00000000000000000000000000000000', setIcon('tv5monde.png'))
   addDir('Travel Channel', 'http://www.digi-online.ro/tv/travel+channel/', setIcon('TravelChannel.png'))
-  addDir('Paprika TV', 'http://www.digi-online.ro/tv/tv+paprika/', setIcon('PaprikaTV.png'))
+  if settings.getSetting('72') == 'true':
+    addDir('TLC Entertainment', 'http://' + str(extra_streamSRV) +'/digiedge2/tlce' + str(stream_Quality) +'/index.m3u8?is=72&src=app&t=00000000000000000000000000000000', setIcon('TLC.png'))
+  if settings.getSetting('74') == 'true':
+    addDir('Travel Mix Channel', 'http://' + str(extra_streamSRV) +'/travelmixchannele' + str(stream_Quality) +'/index.m3u8?is=74&src=app&t=00000000000000000000000000000000', setIcon('tv.png'))
+  if settings.getSetting('73') == 'true':
+    addDir('Epop Entertainment', 'http://' + str(extra_streamSRV) +'/digiedge2/eentertainmente' + str(stream_Quality) +'/index.m3u8?is=73&src=app&t=00000000000000000000000000000000', setIcon('tv.png'))
   addDir('Digi Life', 'http://www.digi-online.ro/tv/digi+life/', setIcon('DigiLife.png'))
   addDir('Digi World', 'http://www.digi-online.ro/tv/digi+world/', setIcon('DigiWorld.png'))
   addDir('Viasat Explorer', 'http://www.digi-online.ro/tv/viasat+explorer/', setIcon('ViasatExplore.png'))
+  if settings.getSetting('71') == 'true':
+    addDir('Discovery Channel', 'http://' + str(extra_streamSRV) +'/digiedge2/discoverye' + str(stream_Quality) +'/index.m3u8?is=71&src=app&t=00000000000000000000000000000000', setIcon('DiscoveryChannel.png'))
   addDir('National Geographic', 'http://www.digi-online.ro/tv/national+geographic/', setIcon('NatGeographic.png'))
   addDir('History Channel', 'http://www.digi-online.ro/tv/history+channel/', setIcon('HistoryChannel.png'))
   addDir('Viasat History', 'http://www.digi-online.ro/tv/viasat+history/', setIcon('ViasatHistory.png'))
@@ -345,31 +354,42 @@ def parseInput(url):
     result = None
     item = None
     infos = None
+    match = None
 
     if debug_Enabled == 'true':
 	LF = open(myLogFile, 'a')
 	LF.write("parseInput URL: '" + url + '\'\n')
 
-    link = processLink(url)
-    if epgInfo_Enabled == 'true':
-	getEPGdata(link)
+    ## Parsed URL is one of the hidden DIGI-Online/RDS programmes
+    for prog in (hiddenProgrammes):
+      if prog in url:
+	result = url
+	httpURLopener = urllib2.build_opener()
+	match = [prog]
+	if debug_Enabled == 'true':
+	  LF.write("parseInput hiddenProgrammes: '" + prog + '\'\n')
 
-    ## Case 1: "scope":"digi24" (www.digi24.ro)
-    if "www.digi24.ro/live" in url:
-      match = re.compile('"scope":"(.+?)"').findall(link)
+    if result is None:
+      link = processLink(url)
+      if epgInfo_Enabled == 'true':
+	  getEPGdata(link)
 
-    ## Case 2: data-balancer-scope-name="utv" (www.digi-online.ro)
-    elif "www.digi-online.ro/tv/" in url:
-      match = re.compile('data-balancer-scope-name="(.+?)"').findall(link)
+      ## Case 1: "scope":"digi24" (www.digi24.ro)
+      if "www.digi24.ro/live" in url:
+	match = re.compile('"scope":"(.+?)"').findall(link)
 
-    if len(match) > 0:
+      ## Case 2: data-balancer-scope-name="utv" (www.digi-online.ro)
+      elif "www.digi-online.ro/tv/" in url:
+	match = re.compile('data-balancer-scope-name="(.+?)"').findall(link)
+
+      if len(match) > 0:
+	  print match
+      else:
+	match = ['digi24']
 	print match
-    else:
-      match = ['digi24']
-      print match
-      xbmcgui.Dialog().ok('Error', 'Could not access ' + url)
-      if debug_Enabled == 'true':
-	LF.write('\n' + "parseInput Error: Could not access '" + url + '\'\n')
+	xbmcgui.Dialog().ok('Error', 'Could not access ' + url)
+	if debug_Enabled == 'true':
+	  LF.write('\n' + "parseInput Error: Could not access '" + url + '\'\n')
 
     if "http://www.digi-online.ro/tv/digi+film/" in url:
       	xbmcgui.Dialog().ok('Error', 'DIGI FILM not yet implemented')
@@ -393,13 +413,13 @@ def parseInput(url):
 	  for cookie in (myCookieJar):
 	    LF.write("parseInput cookie: " + str(cookie) + '\n')
 
-	#link = 'http://www.digi-online.ro/xhr-gen-stream.php'
-	#formdata = urllib.urlencode({'scope': 'digifilm'})
-	#httpGet = httpURLopener.open(link, formdata)
-	#response = httpGet.read()
-	#if debug_Enabled == 'true':
-	  #LF.write("parseInput HTTP POST: '" + link + '\'\n')
-	  #LF.write("parseInput HTTP/1.1 200 OK: '" + response + '\'\n')
+	link = 'http://www.digi-online.ro/xhr-gen-stream.php'
+	formdata = urllib.urlencode({'scope': 'digifilm'})
+	httpGet = httpURLopener.open(link, formdata)
+	response = httpGet.read()
+	if debug_Enabled == 'true':
+	  LF.write("parseInput HTTP POST: '" + link + '\'\n')
+	  LF.write("parseInput HTTP/1.1 200 OK: '" + response + '\'\n')
 
 	httpURLopener.addheaders = [
 	    ('Host', 'digiapis.rcs-rds.ro'),
@@ -425,25 +445,13 @@ def parseInput(url):
 	result = result.replace('"', '')
 	result = result.replace('{stream_url:', '')
 
-	if "index.m3u8" in result:
-	  origin = result.replace('index.m3u8', '')
-
 	if debug_Enabled == 'true':
 	  LF.write("parseInput HTTPS GET: '" + sslurl + '\'\n')
 	  LF.write("parseInput HTTPS OK (list): '" + mydata + '\'\n')
 	  LF.write("parseInput result: '" + result + '\'\n')
 	  LF.write("----------------------------"+'\n')
 
-	item = xbmcgui.ListItem(path=result, iconImage=addon_thumb, thumbnailImage=nowPlayingThumb)
-	itemInfo = {
-	  'type': 'Video',
-	  'genre': 'Live Stream',
-	  'title': nowPlayingTitle,
-	  'playcount': '0'
-	}
-	item.setInfo('video', itemInfo)
-
-    else:
+    elif result is None and match is not None:
       httpURLopener = urllib2.build_opener()
       httpURLopener.addheaders = [
 	  ('Host', digiMaster),
@@ -466,18 +474,20 @@ def parseInput(url):
 	LF.write("parseInput HTTP GET: '" + keyMaster + '\'\n')
 	LF.write("parseInput HTTP/1.1 200 OK (key): '" + myKey + '\'\n')
 
+      ### TODO
+      ### ADD COOKIES to header
+      #slink = 'http://www.digi-online.ro/xhr-gen-stream.php'
+      #formdata = urllib.urlencode({'scope': match[0]})
+      #httpGet = httpURLopener.open(slink, formdata)
+      #response = httpGet.read()
+      #if debug_Enabled == 'true':
+	#LF.write("parseInput HTTP POST: '" + slink + '\'\n')
+	#LF.write("parseInput HTTP/1.1 200 OK: '" + response + '\'\n')
+
       try:
 	file = httpURLopener.open(link).read()
 	infos = json.loads(file)
 	result = infos['file']
-	item = xbmcgui.ListItem(path=result, iconImage=addon_thumb, thumbnailImage=nowPlayingThumb)
-	itemInfo = {
-	  'type': 'Video',
-	  'genre': 'Live Stream',
-	  'title': nowPlayingTitle,
-	  'playcount': '0'
-	}
-	item.setInfo('video', itemInfo)
       except:
 	xbmcgui.Dialog().ok('Error', 'Could not access ' + url)
 	if debug_Enabled == 'true':
@@ -489,16 +499,31 @@ def parseInput(url):
 	LF.write("parseInput result: '" + result + '\'\n')
 	LF.write("----------------------------"+'\n')
 
+    ## Build ListItem
+    if result is not None:
+      try:
+	item = xbmcgui.ListItem(path=result, iconImage=addon_thumb, thumbnailImage=nowPlayingThumb)
+	itemInfo = {
+	  'type': 'Video',
+	  'genre': 'Live Stream',
+	  'title': nowPlayingTitle,
+	  'playcount': '0'
+	}
+	item.setInfo('video', itemInfo)
+      except:
+	xbmcgui.Dialog().ok('Error', 'Could not access media')
+	if debug_Enabled == 'true':
+	  LF.write("parseInput: Could not access '" + result + '\'\n')
 
     ## Play stream
     if item is not None and result is not None:
       if debug_Enabled == 'true':
 	LF.write("xbmc.Player().play(" + result + "," + str(item) + ")" + '\n')
 
+      xbmcplugin.setContent(int(sys.argv[1]), 'movies')
+      #xbmc.Player().play(result)
       xbmc.Player().play(result, item)
       #xbmc.Player().play(item=myPlayFile)
-
-      xbmcplugin.setContent(int(sys.argv[1]), 'movies')
 
       if epgInfo_Enabled == 'true':
 	if infoEPGnowP == '':
@@ -522,19 +547,18 @@ def savePlayList(url):
 	LF.write("savePlayList URL: '" + url + '\'\n')
 
       if "index.m3u8" in url:
-	origin = removeAfter(url, '.m3u')
 	url = removeAfter(url, 'index.m3u8')
 	response = httpURLopener.open(url)
 	mydata = response.read()
-	PF.write(re.sub('([_A-Za-z0-9.]+).m3u8', '', mydata) + '\n')
-
 	if debug_Enabled == 'true':
-	  LF.write("savePlayList HTTP GET: '" + origin + '\'\n')
+	  LF.write("savePlayList HTTP GET: '" + url + '\'\n')
 	  LF.write("savePlayList HTTP/1.1 200 OK: \n" + mydata + '\n')
+	#PF.write(mydata + '\n')
+	PF.write(re.sub('([_A-Za-z0-9.]+).m3u8', '', mydata) + '\n')
 
 	if ".m3u8" in mydata:
 	  variant = str((re.compile('(.+?.m3u8)').findall(mydata))[0])
-	  origin = origin.replace('index.m3u', '')
+	  origin = url.replace('index.m3u8', '')
 	  playlist = origin + variant
 	  response = httpURLopener.open(playlist)
 	  mydata = response.read()
@@ -545,7 +569,6 @@ def savePlayList(url):
 
 	  mydata = mydata.replace('#EXTM3U', '')
 	  mydata = mydata.replace('#EXT-X-VERSION:3', '')
-
 	  for line in mydata.split('\n'):
 	    if ".ts" in line:
 	      nline = origin + line
@@ -623,3 +646,4 @@ else:
 xbmcplugin.endOfDirectory(int(sys.argv[1]))
 
 ####################################################################################################
+
