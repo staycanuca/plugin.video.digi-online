@@ -27,7 +27,7 @@ osdInfo_Enabled = settings.getSetting('popup_Enabled')
 epgInfo_Enabled = settings.getSetting('popup_EPGinfo')
 
 extra_streamSRV = settings.getSetting('extra_streamSRV')
-hiddenProgrammes = ['discoverye', 'tv5mondee', 'tlce', 'travelmixchannele', 'eentertainmente']
+hiddenProgrammes = ['discoverye', 'tv5mondee', 'tlce', 'travelmixchannele', 'eentertainmente', 'connectmedia']
 
 digiMaster = 'balancer.digi24.ro'
 keyMaster = 'http://balancer.digi24.ro/streamer/make_key.php'
@@ -124,8 +124,12 @@ def ROOT():
   addDir('BBC Earth', 'http://www.digi-online.ro/tv/bbc+earth/', setIcon('BBC_Earth.png'))
   addDir('Digi Animal World', 'http://www.digi-online.ro/tv/digi+animal+world/', setIcon('DigiAnimalWorld.png'))
   addDir('Viasat Nature', 'http://www.digi-online.ro/tv/viasat+nature/', setIcon('ViasatNature.png'))
-
+  addDir('AXN', 'http://www.digi-online.ro/tv/axn/', setIcon('AXN.png'))
+  addDir('AXN Spin', 'http://www.digi-online.ro/tv/axn+spin/', setIcon('AXN_Spin.png'))
+  addDir('AXN White', 'http://www.digi-online.ro/tv/axn+white/', setIcon('AXN_White.png'))
+  addDir('AXN Black', 'http://www.digi-online.ro/tv/axn+black/', setIcon('AXN_Black.png'))
   addDir('TV1000', 'http://www.digi-online.ro/tv/tv+1000/', setIcon('TV1000.png'))
+
   if login_Enabled == "true":
     addDir('Digi Film', 'http://www.digi-online.ro/tv/digi+film/', setIcon('DigiFilm.png'))
 
@@ -153,6 +157,8 @@ def ROOT():
   addDir('Digi24 Oradea', 'http://www.digi-online.ro/tv/digi24+oradea/', setIcon('Digi24.png'))
   addDir('Digi24 Brasov', 'http://www.digi-online.ro/tv/digi24+brasov/', setIcon('Digi24.png'))
   addDir('Digi24 Cluj', 'http://www.digi24.ro/live/digi24-cluj-napoca', setIcon('Digi24.png'))
+  addDir('M1', 'https://c402-node62-cdn.connectmedia.hu/1100/746f4587970e6a9d1d77231922604086/5a19fb6f/05.m3u8', setIcon('Digi24.png'))
+
 
 
 def addDir(name, url, iconimage):
@@ -445,6 +451,9 @@ def parseInput(url):
 	result = result.replace('"', '')
 	result = result.replace('{stream_url:', '')
 
+	if "http://" not in result:
+	  result = "".join(("http:", result))
+
 	if debug_Enabled == 'true':
 	  LF.write("parseInput HTTPS GET: '" + sslurl + '\'\n')
 	  LF.write("parseInput HTTPS OK (list): '" + mydata + '\'\n')
@@ -493,6 +502,10 @@ def parseInput(url):
 	file = httpURLopener.open(link).read()
 	infos = json.loads(file)
 	result = infos['file']
+
+	if "http://" not in result:
+	  result = "".join(("http:", result))
+
       except:
 	xbmcgui.Dialog().ok('Error', 'Could not access ' + url)
 	if debug_Enabled == 'true':
@@ -546,6 +559,9 @@ def parseInput(url):
 def savePlayList(url):
       global httpURLopener
       PF = open(myPlayFile, 'w+')
+
+      if "http://" not in url:
+	url = "".join(("http:", url))
 
       if debug_Enabled == 'true':
 	LF = open(myLogFile, 'a')

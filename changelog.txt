@@ -1,5 +1,11 @@
-v 0.2.5
 
+v 0.2.5
+- Fixed playback broken due to changes on Digi-online.ro website
+- Added programmes
+  AXN
+  AXN White
+  AXN Black
+  AXN Spin
 
 v 0.2.4
 - added hidden Digi-Online programmes:
