@@ -128,6 +128,8 @@ def ROOT():
   addDir('AXN Spin', 'http://www.digi-online.ro/tv/axn+spin/', setIcon('AXN_Spin.png'))
   addDir('AXN White', 'http://www.digi-online.ro/tv/axn+white/', setIcon('AXN_White.png'))
   addDir('AXN Black', 'http://www.digi-online.ro/tv/axn+black/', setIcon('AXN_Black.png'))
+  addDir('Film Cafe', 'http://www.digi-online.ro/tv/film+cafe/', setIcon('FilmCafe.png'))
+  addDir('TNT', 'http://www.digi-online.ro/tv/tnt/', setIcon('TNT.png'))
   addDir('TV1000', 'http://www.digi-online.ro/tv/tv+1000/', setIcon('TV1000.png'))
 
   if login_Enabled == "true":
