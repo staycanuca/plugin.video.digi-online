@@ -27,7 +27,7 @@ osdInfo_Enabled = settings.getSetting('popup_Enabled')
 epgInfo_Enabled = settings.getSetting('popup_EPGinfo')
 
 extra_streamSRV = settings.getSetting('extra_streamSRV')
-hiddenProgrammes = ['discoverye', 'tv5mondee', 'tlce', 'travelmixchannele', 'eentertainmente']
+hiddenProgrammes = ['discoverye', 'tv5mondee', 'tlce', 'travelmixchannele', 'eentertainmente', 'connectmedia']
 
 digiMaster = 'balancer.digi24.ro'
 keyMaster = 'http://balancer.digi24.ro/streamer/make_key.php'
@@ -104,14 +104,12 @@ def ROOT():
   addDir('Romania TV', 'http://www.digi-online.ro/tv/romania+tv/', setIcon('RomaniaTV.png'))
   addDir('France 24 [EN]', 'http://www.digi-online.ro/tv/france+24/', setIcon('France24.png'))
   if settings.getSetting('75') == 'true':
-    addDir('TV5 Monde', 'http://' + str(extra_streamSRV) +'/digiedge2/tv5mondee' + str(stream_Quality) +'/index.m3u8?is=75&src=app&t=00000000000000000000000000000000', setIcon('tv5monde.png'))
+    addDir('TV5 Monde [FR]', 'http://' + str(extra_streamSRV) +'/digiedge2/tv5mondee' + str(stream_Quality) +'/index.m3u8?is=75&src=app&t=00000000000000000000000000000000', setIcon('tv5monde.png'))
+  addDir('CNN [EN]', 'http://www.digi-online.ro/tv/cnn/', setIcon('tv.png'))
+
   addDir('Travel Channel', 'http://www.digi-online.ro/tv/travel+channel/', setIcon('TravelChannel.png'))
-  if settings.getSetting('72') == 'true':
-    addDir('TLC Entertainment', 'http://' + str(extra_streamSRV) +'/digiedge2/tlce' + str(stream_Quality) +'/index.m3u8?is=72&src=app&t=00000000000000000000000000000000', setIcon('TLC.png'))
   if settings.getSetting('74') == 'true':
     addDir('Travel Mix Channel', 'http://' + str(extra_streamSRV) +'/travelmixchannele' + str(stream_Quality) +'/index.m3u8?is=74&src=app&t=00000000000000000000000000000000', setIcon('tv.png'))
-  if settings.getSetting('73') == 'true':
-    addDir('Epop Entertainment', 'http://' + str(extra_streamSRV) +'/digiedge2/eentertainmente' + str(stream_Quality) +'/index.m3u8?is=73&src=app&t=00000000000000000000000000000000', setIcon('tv.png'))
   addDir('Digi Life', 'http://www.digi-online.ro/tv/digi+life/', setIcon('DigiLife.png'))
   addDir('Digi World', 'http://www.digi-online.ro/tv/digi+world/', setIcon('DigiWorld.png'))
   addDir('Viasat Explorer', 'http://www.digi-online.ro/tv/viasat+explorer/', setIcon('ViasatExplore.png'))
@@ -124,7 +122,20 @@ def ROOT():
   addDir('BBC Earth', 'http://www.digi-online.ro/tv/bbc+earth/', setIcon('BBC_Earth.png'))
   addDir('Digi Animal World', 'http://www.digi-online.ro/tv/digi+animal+world/', setIcon('DigiAnimalWorld.png'))
   addDir('Viasat Nature', 'http://www.digi-online.ro/tv/viasat+nature/', setIcon('ViasatNature.png'))
+  addDir('Fishing & Hunting', 'http://www.digi-online.ro/tv/fishing+and+hunting/', setIcon('tv.png'))
+  addDir('CBS Reality', 'http://www.digi-online.ro/tv/cbs+reality/', setIcon('tv.png'))
+  if settings.getSetting('72') == 'true':
+    addDir('TLC Entertainment', 'http://' + str(extra_streamSRV) +'/digiedge2/tlce' + str(stream_Quality) +'/index.m3u8?is=72&src=app&t=00000000000000000000000000000000', setIcon('TLC.png'))
+  if settings.getSetting('73') == 'true':
+    addDir('Epop Entertainment', 'http://' + str(extra_streamSRV) +'/digiedge2/eentertainmente' + str(stream_Quality) +'/index.m3u8?is=73&src=app&t=00000000000000000000000000000000', setIcon('tv.png'))
 
+
+  addDir('AXN', 'http://www.digi-online.ro/tv/axn/', setIcon('AXN.png'))
+  addDir('AXN Spin', 'http://www.digi-online.ro/tv/axn+spin/', setIcon('AXN_Spin.png'))
+  addDir('AXN White', 'http://www.digi-online.ro/tv/axn+white/', setIcon('AXN_White.png'))
+  addDir('AXN Black', 'http://www.digi-online.ro/tv/axn+black/', setIcon('AXN_Black.png'))
+  addDir('Film Cafe', 'http://www.digi-online.ro/tv/film+cafe/', setIcon('FilmCafe.png'))
+  addDir('TNT', 'http://www.digi-online.ro/tv/tnt/', setIcon('TNT.png'))
   addDir('TV1000', 'http://www.digi-online.ro/tv/tv+1000/', setIcon('TV1000.png'))
   if login_Enabled == "true":
     addDir('Digi Film', 'http://www.digi-online.ro/tv/digi+film/', setIcon('DigiFilm.png'))
@@ -133,12 +144,15 @@ def ROOT():
   addDir('Music Channel', 'http://www.digi-online.ro/tv/music+channel/', setIcon('MusicChannel.png'))
   addDir('Kiss TV', 'http://www.digi-online.ro/tv/kiss+tv/', setIcon('KissTV.png'))
   addDir('HitMusic Channel','http://www.digi-online.ro/tv/hit+music+channel/', setIcon('HitMusicChannel.png'))
+  addDir('Slager TV [HU]','http://www.digi-online.ro/tv/slager+tv/', setIcon('tv.png'))
 
   addDir('Disney Channel', 'http://www.digi-online.ro/tv/disney+channel/', setIcon('DisneyChannel.png'))
   addDir('Megamax', 'http://www.digi-online.ro/tv/megamax/', setIcon('Megamax.png'))
   addDir('Nickelodeon', 'http://www.digi-online.ro/tv/nickelodeon/', setIcon('Nickelodeon.png'))
   addDir('Minimax', 'http://www.digi-online.ro/tv/minimax/', setIcon('Minimax.png'))
   addDir('Disney Junior', 'http://www.digi-online.ro/tv/disney+junior/', setIcon('DisneyJunior.png'))
+  addDir('Cartoon Network', 'http://www.digi-online.ro/tv/cartoon+network/', setIcon('tv.png'))
+  addDir('Boomerang', 'http://www.digi-online.ro/tv/boomerang/', setIcon('tv.png'))
   addDir('Davinci Learning', 'http://www.digi-online.ro/tv/davinci+learning/', setIcon('DaVinciLearning.png'))
 
   addDir('DigiSport 1', 'http://www.digi-online.ro/tv/digisport+1/', setIcon('DigiSport1.png'))
@@ -153,6 +167,8 @@ def ROOT():
   addDir('Digi24 Oradea', 'http://www.digi-online.ro/tv/digi24+oradea/', setIcon('Digi24.png'))
   addDir('Digi24 Brasov', 'http://www.digi-online.ro/tv/digi24+brasov/', setIcon('Digi24.png'))
   addDir('Digi24 Cluj', 'http://www.digi24.ro/live/digi24-cluj-napoca', setIcon('Digi24.png'))
+  #addDir('M1', 'https://c402-node62-cdn.connectmedia.hu/1100/746f4587970e6a9d1d77231922604086/5a19fb6f/05.m3u8', setIcon('tv.png'))
+
 
 
 def addDir(name, url, iconimage):
@@ -445,6 +461,9 @@ def parseInput(url):
 	result = result.replace('"', '')
 	result = result.replace('{stream_url:', '')
 
+	if "http://" not in result:
+	  result = "".join(("http:", result))
+
 	if debug_Enabled == 'true':
 	  LF.write("parseInput HTTPS GET: '" + sslurl + '\'\n')
 	  LF.write("parseInput HTTPS OK (list): '" + mydata + '\'\n')
@@ -493,6 +512,10 @@ def parseInput(url):
 	file = httpURLopener.open(link).read()
 	infos = json.loads(file)
 	result = infos['file']
+
+	if "http://" not in result:
+	  result = "".join(("http:", result))
+
       except:
 	xbmcgui.Dialog().ok('Error', 'Could not access ' + url)
 	if debug_Enabled == 'true':
@@ -546,6 +569,9 @@ def parseInput(url):
 def savePlayList(url):
       global httpURLopener
       PF = open(myPlayFile, 'w+')
+
+      if "http://" not in url:
+	url = "".join(("http:", url))
 
       if debug_Enabled == 'true':
 	LF = open(myLogFile, 'a')
